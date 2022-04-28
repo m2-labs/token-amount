@@ -1,6 +1,6 @@
 # Token Amount
 
-An arbitrary-precision Token Amount library for Typescript
+An arbitrary-precision Solana Token amount library for Typescript
 
 ## Installation
 

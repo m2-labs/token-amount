@@ -1,3 +1,2 @@
-import Decimal from "decimal.js"
-
-export const number = new Decimal(42)
+export * from "./TokenAmount"
+export * from "./TokenInfo"
