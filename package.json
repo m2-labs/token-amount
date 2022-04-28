@@ -1,7 +1,7 @@
 {
   "name": "@m2-labs/token-amount",
-  "version": "0.1.0",
-  "description": "An arbitrary-precision Token Amount library for Typescript",
+  "version": "0.0.1",
+  "description": "An arbitrary-precision Solana Token Amount library for Typescript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
