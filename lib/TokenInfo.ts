@@ -53,14 +53,14 @@ export class TokenInfo {
   }
 
   static get SOL(): TokenInfo {
-    return new TokenInfo({ symbol: "SOL", decimals: 9 })
+    return new TokenInfo(KNOWN_TOKENS.SOL)
   }
 
   static get USDC(): TokenInfo {
-    return new TokenInfo({ symbol: "USDC", decimals: 6 })
+    return new TokenInfo(KNOWN_TOKENS.USDC)
   }
 
   static get ETH(): TokenInfo {
-    return new TokenInfo({ symbol: "ETH", decimals: 18 })
+    return new TokenInfo(KNOWN_TOKENS.ETH)
   }
 }

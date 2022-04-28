@@ -89,8 +89,8 @@ export class TokenAmount {
    *
    * @returns
    */
-  toBN(): BN {
-    return new BN(this.subunits.toString())
+  toBN(asSubunits = true): BN {
+    return new BN(asSubunits ? this.subunits.toString() : this.units.toString())
   }
 
   /**
@@ -106,7 +106,7 @@ export class TokenAmount {
    * @param param0
    * @returns
    */
-  clone(amount?: DecimalLike, tokenInfo?: TokenInfoLike): TokenAmount {
+  clone(amount?: DecimalLike | null, tokenInfo?: TokenInfoLike): TokenAmount {
     return new TokenAmount(amount || this.amount, tokenInfo || this.tokenInfo)
   }
 
@@ -119,10 +119,6 @@ export class TokenAmount {
    */
   minus(other: TokenAmountLike): TokenAmount {
     assertSameToken(this, other)
-
-    if (!other) {
-      return this.clone()
-    }
 
     if (other instanceof TokenAmount) {
       return this.clone(this.amount.minus(other.amount))
@@ -139,10 +135,6 @@ export class TokenAmount {
   plus(other: TokenAmountLike): TokenAmount {
     assertSameToken(this, other)
 
-    if (!other) {
-      return this.clone()
-    }
-
     if (other instanceof TokenAmount) {
       return this.clone(this.amount.plus(other.amount))
     }
@@ -156,12 +148,6 @@ export class TokenAmount {
    * @returns
    */
   times(other: TokenAmountLike): TokenAmount {
-    assertSameToken(this, other)
-
-    if (!other) {
-      return this.clone()
-    }
-
     if (other instanceof TokenAmount) {
       return this.clone(this.amount.times(other.amount))
     }
@@ -175,12 +161,6 @@ export class TokenAmount {
    * @returns
    */
   div(other: TokenAmountLike): TokenAmount {
-    assertSameToken(this, other)
-
-    if (!other) {
-      return this.clone()
-    }
-
     if (other instanceof TokenAmount) {
       return this.clone(this.amount.div(other.amount))
     }
