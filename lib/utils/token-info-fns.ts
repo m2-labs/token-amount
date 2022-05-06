@@ -12,7 +12,11 @@ export type TokenInfoLike = TokenInfo | string
  * @param symbol
  * @returns
  */
-export const findTokenBySymbol = (symbol: string): TokenInfo | undefined => {
+export const findTokenBySymbol = (symbol?: string): TokenInfo | undefined => {
+  if (!symbol) {
+    return
+  }
+
   return (tokenList as TokenList).tokens.find(
     (token) => token.symbol === symbol
   )
@@ -23,7 +27,13 @@ export const findTokenBySymbol = (symbol: string): TokenInfo | undefined => {
  * @param mint
  * @returns
  */
-export const findTokenByMint = (mint: PublicKeyLike): TokenInfo | undefined => {
+export const findTokenByMint = (
+  mint?: PublicKeyLike
+): TokenInfo | undefined => {
+  if (!mint) {
+    return
+  }
+
   return (tokenList as TokenList).tokens.find(
     (token) => token.address === mint.toString()
   )
@@ -35,8 +45,12 @@ export const findTokenByMint = (mint: PublicKeyLike): TokenInfo | undefined => {
  * @returns
  */
 export const findToken = (
-  symbolOrMint: PublicKeyLike
+  symbolOrMint?: PublicKeyLike
 ): TokenInfo | undefined => {
+  if (!symbolOrMint) {
+    return
+  }
+
   return (tokenList as TokenList).tokens.find(
     (token) =>
       token.address === symbolOrMint.toString() ||
@@ -49,7 +63,7 @@ export const findToken = (
  * @param tokenInfo
  * @returns
  */
-export const buildTokenInfo = (tokenInfo: TokenInfoLike) => {
+export const buildTokenInfo = (tokenInfo?: TokenInfoLike) => {
   const info = typeof tokenInfo === "string" ? findToken(tokenInfo) : tokenInfo
 
   if (!info) {

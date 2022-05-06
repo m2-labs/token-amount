@@ -18,6 +18,10 @@ test("findTokenBySymbol() returns undefined if no token is found", () => {
   expect(findTokenBySymbol("invalid")).toBeUndefined()
 })
 
+test("findTokenBySymbol() returns undefined if no symbol is provided", () => {
+  expect(findTokenBySymbol()).toBeUndefined()
+})
+
 test("findTokenByMint() returns a TokenInfo with the same mint", () => {
   const token = findTokenByMint("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")
 
@@ -29,6 +33,10 @@ test("findTokenByMint() returns a TokenInfo with the same mint", () => {
 
 test("findTokenBySymbol() returns undefined if no token is found", () => {
   expect(findTokenByMint("invalid")).toBeUndefined()
+})
+
+test("findTokenBySymbol() returns undefined if no symbol is provided", () => {
+  expect(findTokenBySymbol()).toBeUndefined()
 })
 
 test("findToken() returns a TokenInfo with the same symbol", () => {
@@ -49,8 +57,12 @@ test("findToken() returns a TokenInfo with the same mint", () => {
   expect(token?.decimals).toEqual(6)
 })
 
-test("findToken returns undefined if no token is found", () => {
+test("findToken() returns undefined if no token is found", () => {
   expect(findToken("invalid")).toBeUndefined()
+})
+
+test("findToken() returns undefined if no symbol is provided", () => {
+  expect(findToken()).toBeUndefined()
 })
 
 test("buildTokenInfo() returns a TokenInfo with the same symbol", () => {
@@ -71,8 +83,14 @@ test("buildTokenInfo() returns a TokenInfo with the same mint", () => {
   expect(token?.decimals).toEqual(6)
 })
 
-test("buildTokenInfo throws if no token is found", () => {
+test("buildTokenInfo() throws if no token is found", () => {
   expect(() => {
     buildTokenInfo("invalid")
+  }).toThrow()
+})
+
+test("buildTokenInfo() throws if no symbol or mint is provided", () => {
+  expect(() => {
+    buildTokenInfo()
   }).toThrow()
 })
