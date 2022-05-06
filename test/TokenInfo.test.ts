@@ -46,5 +46,5 @@ test("ETH helper method exists", () => {
   const info = TokenInfo.ETH
 
   expect(info.symbol).toBe("ETH")
-  expect(info.decimals.toNumber()).toBe(18)
+  expect(info.decimals.toNumber()).toBe(8)
 })

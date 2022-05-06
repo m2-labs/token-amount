@@ -6,7 +6,7 @@ import { asDecimal, DecimalLike } from "./utils/decimal-fns"
 /**
  *
  */
-export type TokenAmountLike = TokenAmount | DecimalLike
+type TokenAmountLike = TokenAmount | DecimalLike
 
 /**
  *
