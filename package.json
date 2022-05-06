@@ -1,6 +1,6 @@
 {
   "name": "@m2-labs/token-amount",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An arbitrary-precision Solana Token Amount library for Typescript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,7 +36,7 @@
     "dist"
   ],
   "dependencies": {
-    "@solana/spl-token-registry": "^0.2.3817",
+    "@solana/spl-token-registry": "*",
     "@solana/web3.js": "^1.39.1",
     "bn.js": "^5.2.0",
     "decimal.js": "^10.3.1"
