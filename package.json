@@ -36,6 +36,7 @@
     "dist"
   ],
   "dependencies": {
+    "@solana/spl-token-registry": "^0.2.3817",
     "@solana/web3.js": "^1.39.1",
     "bn.js": "^5.2.0",
     "decimal.js": "^10.3.1"

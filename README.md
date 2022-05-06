@@ -1,11 +1,22 @@
 # Token Amount
 
-An arbitrary-precision Solana Token amount library for Typescript
+A safe and easy way to deal with amounts of Solana Tokens.
 
 ## Installation
 
 ```sh
 npm i @m2-labs/token-amount
+```
+
+## Usage
+
+```ts
+import { TokenAmount } from '@m2-labs/token-amount';
+
+const oneDollar = new TokenAmount(1, 'USDC');
+const anotherDollar = TokenAmount.fromSubunits(1000000, 'USDC')
+
+const twoDollars = oneDollar.plus(anotherDollar)
 ```
 
 ## Brought to you by M2 Labs

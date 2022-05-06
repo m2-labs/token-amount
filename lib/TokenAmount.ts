@@ -1,7 +1,8 @@
+import { TokenInfo } from "@solana/spl-token-registry"
 import BN from "bn.js"
 import Decimal from "decimal.js"
-import { TokenInfo, TokenInfoLike } from "./TokenInfo"
 import { asDecimal, DecimalLike } from "./utils/decimal-fns"
+import { buildTokenInfo, TokenInfoLike } from "./utils/token-info-fns"
 
 /**
  *
@@ -22,7 +23,7 @@ export class TokenAmount {
    */
   constructor(amount: DecimalLike, tokenInfo: TokenInfoLike) {
     this.amount = asDecimal(amount)
-    this.tokenInfo = new TokenInfo(tokenInfo)
+    this.tokenInfo = buildTokenInfo(tokenInfo)
   }
 
   /**
@@ -45,7 +46,7 @@ export class TokenAmount {
     subunits: DecimalLike,
     tokenInfo: TokenInfoLike
   ): TokenAmount {
-    const info = new TokenInfo(tokenInfo)
+    const info = buildTokenInfo(tokenInfo)
     const exponent = new Decimal(10).pow(asDecimal(info.decimals))
     const amount = asDecimal(subunits).div(exponent)
 
@@ -62,10 +63,13 @@ export class TokenAmount {
   /**
    *
    */
-  get decimals(): Decimal {
+  get decimals(): number {
     return this.tokenInfo.decimals
   }
 
+  /**
+   *
+   */
   get units(): Decimal {
     return this.amount
   }

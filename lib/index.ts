@@ -1,2 +1,2 @@
 export * from "./TokenAmount"
-export * from "./TokenInfo"
+export * from "./utils/token-info-fns"

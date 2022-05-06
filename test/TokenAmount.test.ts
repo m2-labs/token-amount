@@ -1,14 +1,13 @@
 import BN from "bn.js"
 import Decimal from "decimal.js"
 import { TokenAmount } from "../lib/TokenAmount"
-import { TokenInfo } from "../lib/TokenInfo"
 
 test("constructor() builds a new TokenAmount from full units using a number", () => {
-  const amount = new TokenAmount(42, TokenInfo.ETH)
+  const amount = new TokenAmount(42, "ETH")
 
   expect(amount.amount.toString()).toBe("42")
   expect(amount.symbol).toBe("ETH")
-  expect(amount.decimals.toNumber()).toBe(8)
+  expect(amount.decimals).toBe(8)
 })
 
 test("constructor() builds a new TokenAmount from full units using a string", () => {
@@ -16,67 +15,67 @@ test("constructor() builds a new TokenAmount from full units using a string", ()
 
   expect(amount.amount.toString()).toBe("42")
   expect(amount.symbol).toBe("ETH")
-  expect(amount.decimals.toNumber()).toBe(8)
+  expect(amount.decimals).toBe(8)
 })
 
 test("constructor() builds a new TokenAmount from full units using a Decimal", () => {
-  const amount = new TokenAmount(new Decimal(42), TokenInfo.ETH)
+  const amount = new TokenAmount(new Decimal(42), "ETH")
 
   expect(amount.amount.toString()).toBe("42")
   expect(amount.symbol).toBe("ETH")
-  expect(amount.decimals.toNumber()).toBe(8)
+  expect(amount.decimals).toBe(8)
 })
 
 test("constructor() builds a new TokenAmount from full units using a BN", () => {
-  const amount = new TokenAmount(new BN(42), TokenInfo.ETH)
+  const amount = new TokenAmount(new BN(42), "ETH")
 
   expect(amount.amount.toString()).toBe("42")
   expect(amount.symbol).toBe("ETH")
-  expect(amount.decimals.toNumber()).toBe(8)
+  expect(amount.decimals).toBe(8)
 })
 
 test("fromUnits() is a helper alias for the constructor", () => {
-  const amount = TokenAmount.fromUnits(42, TokenInfo.ETH)
+  const amount = TokenAmount.fromUnits(42, "ETH")
 
   expect(amount.amount.toString()).toBe("42")
   expect(amount.symbol).toBe("ETH")
-  expect(amount.decimals.toNumber()).toBe(8)
+  expect(amount.decimals).toBe(8)
 })
 
 test("fromSubunits() builds a new TokenAmont from subunits", () => {
-  const amount = TokenAmount.fromSubunits(42, { symbol: "USD", decimals: 2 })
+  const amount = TokenAmount.fromSubunits(420000, "USDC")
 
   expect(amount.amount.toString()).toBe("0.42")
 })
 
 test("units is an alias for the amount", () => {
-  const amount = new TokenAmount(42, TokenInfo.ETH)
+  const amount = new TokenAmount(42, "ETH")
 
   expect(amount.units.toString()).toBe("42")
 })
 
 test("subunits returns the amount as subunits for eth", () => {
-  const amount = new TokenAmount(42, TokenInfo.ETH)
+  const amount = new TokenAmount(42, "ETH")
 
   expect(amount.subunits.toString()).toBe("4200000000")
 })
 
 test("subunits returns the amount as subunits for sol", () => {
-  const amount = new TokenAmount(42, TokenInfo.SOL)
+  const amount = new TokenAmount(42, "SOL")
 
   expect(amount.subunits.toString()).toBe("42000000000")
 })
 
 test("toNumber() returns the number in units", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
 
   expect(amount.toNumber()).toBe(42)
 })
 
 test("toString() outputs the units with the symbol", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
 
-  expect(amount.toString()).toBe("42 TOK")
+  expect(amount.toString()).toBe("42 ETH")
 })
 
 test("toBN() returns the subunits as a BN", () => {
@@ -116,147 +115,147 @@ test("clone() returns a new TokenAmount with a new symbol", () => {
 })
 
 test("minus() returns a new TokenAmount by subtracting one TokenAmount from another of the same type", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(24, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(24, "ETH")
 
   expect(amount.minus(other).toNumber()).toBe(18)
 })
 
 test("minus() returns a new TokenAmount by subtracting a number from a TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 24
 
   expect(amount.minus(other).toNumber()).toBe(18)
 })
 
 test("minus() returns a new TokenAmount by subtracting a Decimal from a TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(24)
 
   expect(amount.minus(other).toNumber()).toBe(18)
 })
 
 test("minus() returns a new TokenAmount by subtracting a valid string from a TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "24"
 
   expect(amount.minus(other).toNumber()).toBe(18)
 })
 
 test("minus() throws if given two different token types", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(24, TokenInfo.ETH)
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(24, "SOL")
 
   expect(() => amount.minus(other)).toThrow()
 })
 
 test("plus() returns a new TokenAmount by adding one TokenAmount to another of the same type", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(24, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(24, "ETH")
 
   expect(amount.plus(other).toNumber()).toBe(66)
 })
 
 test("plus() returns a new TokenAmount by adding a number to a TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 24
 
   expect(amount.plus(other).toNumber()).toBe(66)
 })
 
 test("plus() returns a new TokenAmount by adding a Decimal to a TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(24)
 
   expect(amount.plus(other).toNumber()).toBe(66)
 })
 
 test("plus() returns a new TokenAmount by adding a valid string to a TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "24"
 
   expect(amount.plus(other).toNumber()).toBe(66)
 })
 
 test("plus() throws if given two different token types", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(24, TokenInfo.ETH)
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(24, "SOL")
 
   expect(() => amount.plus(other)).toThrow()
 })
 
 test("times() returns a new TokenAmount by multiplying one TokenAmount with another of the same type", () => {
-  const amount = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(4, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(2, "ETH")
+  const other = new TokenAmount(4, "ETH")
 
   expect(amount.times(other).toNumber()).toBe(8)
 })
 
 test("times() returns a new TokenAmount by multiplying a number with a TokenAmount", () => {
-  const amount = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(2, "ETH")
   const other = 4
 
   expect(amount.times(other).toNumber()).toBe(8)
 })
 
 test("times() returns a new TokenAmount by multiplying a Decimal with a TokenAmount", () => {
-  const amount = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(2, "ETH")
   const other = new Decimal(4)
 
   expect(amount.times(other).toNumber()).toBe(8)
 })
 
 test("times() returns a new TokenAmount by multiplying a valid string with a TokenAmount", () => {
-  const amount = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(2, "ETH")
   const other = "4"
 
   expect(amount.times(other).toNumber()).toBe(8)
 })
 
 test("times() allows multiplying different types", () => {
-  const amount = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(4, TokenInfo.ETH)
+  const amount = new TokenAmount(2, "SOL")
+  const other = new TokenAmount(4, "ETH")
   const result = amount.times(other)
 
   expect(result.toNumber()).toBe(8)
-  expect(result.symbol).toEqual("TOK")
+  expect(result.symbol).toEqual("SOL")
 })
 
 test("div() returns a new TokenAmount by dividing one TokenAmount by another of the same type", () => {
-  const amount = new TokenAmount(32, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(4, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(32, "ETH")
+  const other = new TokenAmount(4, "ETH")
 
   expect(amount.div(other).toNumber()).toBe(8)
 })
 
 test("div() returns a new TokenAmount by dividing a number by a TokenAmount", () => {
-  const amount = new TokenAmount(32, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(32, "ETH")
   const other = 4
 
   expect(amount.div(other).toNumber()).toBe(8)
 })
 
 test("div() returns a new TokenAmount by dividing a Decimal by a TokenAmount", () => {
-  const amount = new TokenAmount(32, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(32, "ETH")
   const other = new Decimal(4)
 
   expect(amount.div(other).toNumber()).toBe(8)
 })
 
 test("div() returns a new TokenAmount by dividing a valid string by a TokenAmount", () => {
-  const amount = new TokenAmount(32, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(32, "ETH")
   const other = "4"
 
   expect(amount.div(other).toNumber()).toBe(8)
 })
 
 test("div() allows dividing different types", () => {
-  const amount = new TokenAmount(32, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(4, TokenInfo.ETH)
+  const amount = new TokenAmount(32, "SOL")
+  const other = new TokenAmount(4, "ETH")
   const result = amount.div(other)
 
   expect(result.toNumber()).toBe(8)
-  expect(result.symbol).toEqual("TOK")
+  expect(result.symbol).toEqual("SOL")
 })
 
 test("pow() returns a new TokenAmount raised to a power", () => {
@@ -266,252 +265,252 @@ test("pow() returns a new TokenAmount raised to a power", () => {
 })
 
 test("gt() returns true if this TokenAmount is greater than another TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(24, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(24, "ETH")
 
   expect(amount.gt(other)).toBe(true)
 })
 
 test("gt() returns true if this TokenAmount is greater than a number", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 24
 
   expect(amount.gt(other)).toBe(true)
 })
 
 test("gt() returns true if this TokenAmount is greater than a decimal", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(24)
 
   expect(amount.gt(other)).toBe(true)
 })
 
 test("gt() returns true if this TokenAmount is greater than a string", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "24"
 
   expect(amount.gt(other)).toBe(true)
 })
 
 test("gt() returns false if this TokenAmount is the same as another TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(42, "ETH")
 
   expect(amount.gt(other)).toBe(false)
 })
 
 test("gt() returns false if this TokenAmount is equal to a number", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 42
 
   expect(amount.gt(other)).toBe(false)
 })
 
 test("gt() returns false if this TokenAmount is equal to a decimal", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(42)
 
   expect(amount.gt(other)).toBe(false)
 })
 
 test("gt() returns false if this TokenAmount is equal to a string", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "42"
 
   expect(amount.gt(other)).toBe(false)
 })
 
 test("gt() returns false if this TokenAmount is less than another TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(66, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(66, "ETH")
 
   expect(amount.gt(other)).toBe(false)
 })
 
 test("gt() returns false if this TokenAmount is less than a number", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 66
 
   expect(amount.gt(other)).toBe(false)
 })
 
 test("gt() returns false if this TokenAmount is less than a decimal", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(66)
 
   expect(amount.gt(other)).toBe(false)
 })
 
 test("gt() returns false if this TokenAmount is less than a string", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "66"
 
   expect(amount.gt(other)).toBe(false)
 })
 
 test("eq() returns true if this TokenAmount is equal to another TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(42, "ETH")
 
   expect(amount.eq(other)).toBe(true)
 })
 
 test("eq() returns true if this TokenAmount is equal to a number", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 42
 
   expect(amount.eq(other)).toBe(true)
 })
 
 test("eq() returns true if this TokenAmount is equal to a decimal", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(42)
 
   expect(amount.eq(other)).toBe(true)
 })
 
 test("eq() returns true if this TokenAmount is equal to a string", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "42"
 
   expect(amount.eq(other)).toBe(true)
 })
 
 test("eq() returns false if this TokenAmount is the greater than another TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(2, "ETH")
 
   expect(amount.eq(other)).toBe(false)
 })
 
 test("eq() returns false if this TokenAmount is greater than to a number", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 2
 
   expect(amount.eq(other)).toBe(false)
 })
 
 test("eq() returns false if this TokenAmount is greater than to a decimal", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(2)
 
   expect(amount.eq(other)).toBe(false)
 })
 
 test("eq() returns false if this TokenAmount is greater than to a string", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "2"
 
   expect(amount.eq(other)).toBe(false)
 })
 
 test("eq() returns false if this TokenAmount is less than another TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(66, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(66, "ETH")
 
   expect(amount.eq(other)).toBe(false)
 })
 
 test("eq() returns false if this TokenAmount is less than a number", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 66
 
   expect(amount.eq(other)).toBe(false)
 })
 
 test("eq() returns false if this TokenAmount is less than a decimal", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(66)
 
   expect(amount.eq(other)).toBe(false)
 })
 
 test("eq() returns false if this TokenAmount is less than a string", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "66"
 
   expect(amount.eq(other)).toBe(false)
 })
 
 test("lt() returns true if this TokenAmount is less than another TokenAmount", () => {
-  const amount = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(24, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(2, "ETH")
+  const other = new TokenAmount(24, "ETH")
 
   expect(amount.lt(other)).toBe(true)
 })
 
 test("lt() returns true if this TokenAmount is less than a number", () => {
-  const amount = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(2, "ETH")
   const other = 24
 
   expect(amount.lt(other)).toBe(true)
 })
 
 test("lt() returns true if this TokenAmount is less than a decimal", () => {
-  const amount = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(2, "ETH")
   const other = new Decimal(24)
 
   expect(amount.lt(other)).toBe(true)
 })
 
 test("lt() returns true if this TokenAmount is less than a string", () => {
-  const amount = new TokenAmount(2, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(2, "ETH")
   const other = "24"
 
   expect(amount.lt(other)).toBe(true)
 })
 
 test("lt() returns false if this TokenAmount is the same as another TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(42, "ETH")
 
   expect(amount.lt(other)).toBe(false)
 })
 
 test("lt() returns false if this TokenAmount is equal to a number", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 42
 
   expect(amount.lt(other)).toBe(false)
 })
 
 test("lt() returns false if this TokenAmount is equal to a decimal", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(42)
 
   expect(amount.lt(other)).toBe(false)
 })
 
 test("lt() returns false if this TokenAmount is equal to a string", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "42"
 
   expect(amount.lt(other)).toBe(false)
 })
 
 test("lt() returns false if this TokenAmount is greater than another TokenAmount", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
-  const other = new TokenAmount(6, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
+  const other = new TokenAmount(6, "ETH")
 
   expect(amount.lt(other)).toBe(false)
 })
 
 test("lt() returns false if this TokenAmount is greater than a number", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = 6
 
   expect(amount.lt(other)).toBe(false)
 })
 
 test("lt() returns false if this TokenAmount is greater than a decimal", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = new Decimal(6)
 
   expect(amount.lt(other)).toBe(false)
 })
 
 test("lt() returns false if this TokenAmount is greater than a string", () => {
-  const amount = new TokenAmount(42, { symbol: "TOK", decimals: 8 })
+  const amount = new TokenAmount(42, "ETH")
   const other = "6"
 
   expect(amount.lt(other)).toBe(false)
