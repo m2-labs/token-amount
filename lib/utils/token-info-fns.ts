@@ -1,6 +1,17 @@
-import type { TokenInfo, TokenList } from "@solana/spl-token-registry"
-import tokenList from "@solana/spl-token-registry/dist/main/tokens/solana.tokenlist.json"
+import {
+  StaticTokenListResolutionStrategy,
+  TokenInfo,
+  TokenListContainer
+} from "@solana/spl-token-registry"
 import { PublicKeyLike } from "./public-key"
+
+/**
+ * Token List from @solana/spl-token-registry
+ */
+const tokens = new TokenListContainer(
+  new StaticTokenListResolutionStrategy().resolve()
+)
+const tokenList = tokens.filterByClusterSlug("mainnet-beta").getList()
 
 /**
  *
@@ -17,9 +28,7 @@ export const findTokenBySymbol = (symbol?: string): TokenInfo | undefined => {
     return
   }
 
-  return (tokenList as TokenList).tokens.find(
-    (token) => token.symbol === symbol
-  )
+  return tokenList.find((token) => token.symbol === symbol)
 }
 
 /**
@@ -34,9 +43,7 @@ export const findTokenByMint = (
     return
   }
 
-  return (tokenList as TokenList).tokens.find(
-    (token) => token.address === mint.toString()
-  )
+  return tokenList.find((token) => token.address === mint.toString())
 }
 
 /**
@@ -45,13 +52,13 @@ export const findTokenByMint = (
  * @returns
  */
 export const findToken = (
-  symbolOrMint?: PublicKeyLike
+  symbolOrMint?: PublicKeyLike | string
 ): TokenInfo | undefined => {
   if (!symbolOrMint) {
     return
   }
 
-  return (tokenList as TokenList).tokens.find(
+  return tokenList.find(
     (token) =>
       token.address === symbolOrMint.toString() ||
       token.symbol === symbolOrMint.toString()

@@ -31,12 +31,12 @@ test("findTokenByMint() returns a TokenInfo with the same mint", () => {
   expect(token?.decimals).toEqual(6)
 })
 
-test("findTokenBySymbol() returns undefined if no token is found", () => {
+test("findTokenByMint() returns undefined if no token is found", () => {
   expect(findTokenByMint("invalid")).toBeUndefined()
 })
 
-test("findTokenBySymbol() returns undefined if no symbol is provided", () => {
-  expect(findTokenBySymbol()).toBeUndefined()
+test("findTokenByMint() returns undefined if no symbol is provided", () => {
+  expect(findTokenByMint()).toBeUndefined()
 })
 
 test("findToken() returns a TokenInfo with the same symbol", () => {
