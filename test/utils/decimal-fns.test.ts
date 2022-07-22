@@ -28,6 +28,10 @@ test("asDecimal returns the fallback on error", () => {
   expect(asDecimal("not a number", 100).eq(new Decimal(100))).toBe(true)
 })
 
+test("asDecimal allows a BN as a fallback param", () => {
+  expect(asDecimal("not a number", new BN(100)).eq(new Decimal(100))).toBe(true)
+})
+
 test("asDecimal throws on error if the fallback is invalid", () => {
   expect(() => {
     asDecimal("not a number", "also not a number")

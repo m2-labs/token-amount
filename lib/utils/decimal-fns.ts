@@ -1,24 +1,18 @@
 import BN from "bn.js"
-import Decimal from "decimal.js"
+import { asDecimal as asDecimalOrig } from "decimal-fns"
+import type { DecimalLike as DecimalLikeOrig } from "decimal-fns"
 
-export type DecimalLike = Decimal | string | number | BN
+export type DecimalLike = DecimalLikeOrig | BN
 
+/**
+ * A wrapper for `asDecimal` from decimal-fns which accepts a BN as well
+ */
 export const asDecimal = (
-  number?: DecimalLike | null,
+  value?: DecimalLike | null,
   fallback?: DecimalLike
-): Decimal => {
-  if (number === null || number === undefined) {
-    return asDecimal(fallback)
-  }
+) => {
+  const safeValue = BN.isBN(value) ? value.toString() : value
+  const safeFallback = BN.isBN(fallback) ? fallback.toString() : fallback
 
-  try {
-    const decimal = new Decimal(BN.isBN(number) ? number.toString() : number)
-    return decimal
-  } catch (e) {
-    if (fallback !== undefined && fallback !== null) {
-      return asDecimal(fallback)
-    }
-
-    throw e
-  }
+  return asDecimalOrig(safeValue, safeFallback)
 }
