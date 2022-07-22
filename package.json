@@ -1,6 +1,6 @@
 {
   "name": "@m2-labs/token-amount",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "A safe and easy way to deal with amounts of Solana Tokens",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
